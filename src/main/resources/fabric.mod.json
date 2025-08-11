@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "alchemica",
+  "version": "${version}",
+  "name": "Alchemica",
+  "description": "Test description",
+  "authors": [
+    "Lunar_sh",
+    "Kolbenik"
+  ],
+  "contact": {
+    "repo": "https://github.com/nikla/Alchemica"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/alchemica/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "sh.lunar.alchemica.client.AlchemicaClient"
+    ],
+    "main": [
+      "sh.lunar.alchemica.Alchemica"
+    ]
+  },
+  "mixins": [
+    "alchemica.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
