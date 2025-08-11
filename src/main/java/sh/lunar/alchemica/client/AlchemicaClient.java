@@ -1,4 +1,10 @@
 package sh.lunar.alchemica.client;
 
-public class AlchemicaClient {
+import net.fabricmc.api.ClientModInitializer;
+
+public class AlchemicaClient implements ClientModInitializer {
+    @Override
+    public void onInitializeClient() {
+
+    }
 }
