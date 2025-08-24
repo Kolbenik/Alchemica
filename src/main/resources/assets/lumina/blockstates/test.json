@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "lumina:block/test_block" }
+  }
+}
