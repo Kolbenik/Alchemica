@@ -15,7 +15,7 @@ public class ModItemGroup {
     public static final ItemGroup ALCHEMICA = Registry.register(Registries.ITEM_GROUP,
             new Identifier(Alchemica.MOD_ID, "alchemica"),
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.alchemica"))
-                    .icon(() -> new ItemStack(ModItems.TEST_ITEM))
+                    .icon(() -> new ItemStack(ModItems.ICON_ITEM))
                     .entries((displayContext, entries) -> {
                                 entries.add(ModItems.ANTENNA);
                                 entries.add(ModItems.CREDIT_KOLBENIK);

@@ -11,6 +11,9 @@ import sh.luunar.alchemica.item.custom.CreditItem;
 
 public class ModItems {
 
+    public static final Item ICON_ITEM = registerItem("icon",
+            new Item(new FabricItemSettings()));
+
     public static final Item CREDIT_KOLBENIK = registerItem("credit_kolbenik",
             new CreditItem(new FabricItemSettings()));
 
