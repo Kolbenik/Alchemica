@@ -31,6 +31,7 @@ public class CreditItem extends Item {
             tooltip.add(Text.translatable("tooltip.credit_lunar.2").setStyle(Style.EMPTY.withFormatting(Formatting.ITALIC, Formatting.GRAY)));
         } else if (stack.getItem().equals(ModItems.CREDIT_KOLBENIK)) {
             tooltip.add(Text.translatable("tooltip.credit_kolbenik"));
+            tooltip.add(Text.translatable("tooltip.credit_kolbenik.2").setStyle(Style.EMPTY.withFormatting(Formatting.ITALIC, Formatting.GRAY)));
         }
     }
 }
