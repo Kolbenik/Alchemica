@@ -22,6 +22,7 @@ public class Alchemica  implements ModInitializer {
         ModBlocks.registerModBlocks();
         ModMessages.registerS2CMessages();
 
+        LOGGER.info("Registering Message Events for " + Alchemica.MOD_ID);
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(new AllowChatMessageHandler());
         ClientSendMessageEvents.ALLOW_COMMAND.register(new AllowChatMessageHandler());
     }
