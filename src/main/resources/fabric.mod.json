@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "sh.lunar.alchemica.client.AlchemicaClient"
+      "sh.luunar.alchemica.client.AlchemicaClient"
     ],
     "main": [
-      "sh.lunar.alchemica.Alchemica"
+      "sh.luunar.alchemica.Alchemica"
     ]
   },
   "mixins": [
