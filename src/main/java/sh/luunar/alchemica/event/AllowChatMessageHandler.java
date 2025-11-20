@@ -1,4 +1,4 @@
-package sh.lunar.alchemica.event;
+package sh.luunar.alchemica.event;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
@@ -7,7 +7,7 @@ import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import sh.lunar.alchemica.item.ModItems;
+import sh.luunar.alchemica.item.ModItems;
 
 public class AllowChatMessageHandler implements ServerMessageEvents.AllowChatMessage,
                                                 ClientSendMessageEvents.AllowCommand {

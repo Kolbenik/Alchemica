@@ -1,9 +1,9 @@
-package sh.lunar.alchemica.networking;
+package sh.luunar.alchemica.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.util.Identifier;
-import sh.lunar.alchemica.Alchemica;
-import sh.lunar.alchemica.networking.paket.TestS2CPacket;
+import sh.luunar.alchemica.Alchemica;
+import sh.luunar.alchemica.networking.paket.TestS2CPacket;
 
 public class ModMessages {
 

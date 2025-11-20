@@ -1,4 +1,4 @@
-package sh.lunar.alchemica.client;
+package sh.luunar.alchemica.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

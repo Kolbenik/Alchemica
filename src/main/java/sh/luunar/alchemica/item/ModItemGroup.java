@@ -1,4 +1,4 @@
-package sh.lunar.alchemica.item;
+package sh.luunar.alchemica.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
@@ -7,8 +7,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import sh.lunar.alchemica.Alchemica;
-import sh.lunar.alchemica.block.ModBlocks;
+import sh.luunar.alchemica.Alchemica;
+import sh.luunar.alchemica.block.ModBlocks;
 
 public class ModItemGroup {
 

@@ -1,15 +1,15 @@
-package sh.lunar.alchemica;
+package sh.luunar.alchemica;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sh.lunar.alchemica.block.ModBlocks;
-import sh.lunar.alchemica.event.AllowChatMessageHandler;
-import sh.lunar.alchemica.item.ModItemGroup;
-import sh.lunar.alchemica.item.ModItems;
-import sh.lunar.alchemica.networking.ModMessages;
+import sh.luunar.alchemica.block.ModBlocks;
+import sh.luunar.alchemica.event.AllowChatMessageHandler;
+import sh.luunar.alchemica.item.ModItemGroup;
+import sh.luunar.alchemica.item.ModItems;
+import sh.luunar.alchemica.networking.ModMessages;
 
 public class Alchemica  implements ModInitializer {
     public static final String MOD_ID = "alchemica";
