@@ -10,12 +10,18 @@ import sh.luunar.alchemica.Alchemica;
 
 public class ModItems {
 
+    public static final Item CREDIT_KOLBENIK = registerItem("credit_kolbenik",
+            new Item(new FabricItemSettings()));
+
+    public static final Item CREDIT_LUNAR = registerItem("credit_lunar",
+            new Item(new FabricItemSettings()));
+
     public static final Item TEST_ITEM = registerItem("test",
             new Item(new FabricItemSettings()));
 
+
     public static final Item ANTENNA = registerItem("antenna",
             new Item(new FabricItemSettings()));
-
 
 
     private static Item registerItem(String name, Item item) {

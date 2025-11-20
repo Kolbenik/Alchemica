@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "alchemica:item/antenna"
+    "layer0": "alchemica:item/credit_lunar"
   }
-}
+}#+

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "lumina:item/test"
+    "layer0": "alchemica:item/test"
   }
 }
