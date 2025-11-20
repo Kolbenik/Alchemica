@@ -7,14 +7,15 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import sh.luunar.alchemica.Alchemica;
+import sh.luunar.alchemica.item.custom.CreditItem;
 
 public class ModItems {
 
     public static final Item CREDIT_KOLBENIK = registerItem("credit_kolbenik",
-            new Item(new FabricItemSettings()));
+            new CreditItem(new FabricItemSettings()));
 
     public static final Item CREDIT_LUNAR = registerItem("credit_lunar",
-            new Item(new FabricItemSettings()));
+            new CreditItem(new FabricItemSettings()));
 
     public static final Item TEST_ITEM = registerItem("test",
             new Item(new FabricItemSettings()));
