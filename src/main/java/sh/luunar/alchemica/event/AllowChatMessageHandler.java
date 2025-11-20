@@ -26,7 +26,7 @@ public class AllowChatMessageHandler implements ServerMessageEvents.AllowChatMes
     public boolean allowSendCommandMessage(String command) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player == null) return false;
-        if (command.startsWith("say") || command.startsWith("me") ||command.startsWith("msg")) {
+        if (command.startsWith("say") || command.startsWith("me") || command.startsWith("msg") || command.startsWith("tellraw")) {
             if(!client.player.getInventory().contains(ModItems.ANTENNA.getDefaultStack())) {
                 client.player.sendMessage(Text.translatable("chat.alchemica.antenna_needed"), true);
                 return false;
