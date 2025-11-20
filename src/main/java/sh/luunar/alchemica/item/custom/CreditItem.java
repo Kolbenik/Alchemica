@@ -25,6 +25,17 @@ public class CreditItem extends Item {
     }
 
     @Override
+    public Text getName(ItemStack stack) {
+        MutableText name = (MutableText) super.getName(stack);
+        if (stack.getItem().equals(ModItems.CREDIT_LUNAR)) {
+            name.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x6A5ACD)).withFormatting(Formatting.BOLD));
+        } else if (stack.getItem().equals(ModItems.CREDIT_KOLBENIK)) {
+            name.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x301934)).withFormatting(Formatting.BOLD));
+        }
+        return name;
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (stack.getItem().equals(ModItems.CREDIT_LUNAR)) {
             tooltip.add(Text.translatable("tooltip.credit_lunar"));
