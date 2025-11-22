@@ -3,23 +3,23 @@
   "id": "alchemica",
   "version": "${version}",
   "name": "Alchemica",
-  "description": "A Mod about Alchemy... and stuff.",
+  "description": "\u00A76Alchemica\u00A7r bridges the gap between matter and magic.\n\nDelve into the \u00A75forbidden arts\u00A7r of transmutation, manipulate the fundamental laws of nature, and discover that equivalent exchange comes at a \u00A7cprice\u00A7r.\n\n\u00A78\u00A7o\"Matter cannot be created or destroyed... only changed.\"",
   "authors": [
     "Lunar_sh",
     "Kolbenik"
   ],
   "contact": {
-    "repo": "https://github.com/nikla/Alchemica"
+    "sources": "https://github.com/nikla/Alchemica"
   },
   "license": "All-Rights-Reserved",
   "icon": "assets/alchemica/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "sh.luunar.alchemica.client.AlchemicaClient"
-    ],
     "main": [
       "sh.luunar.alchemica.Alchemica"
+    ],
+    "client": [
+      "sh.luunar.alchemica.client.AlchemicaClient"
     ]
   },
   "mixins": [
