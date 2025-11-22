@@ -30,7 +30,7 @@ public class CreditItem extends Item {
         if (stack.getItem().equals(ModItems.CREDIT_LUNAR)) {
             name.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x6A5ACD)).withFormatting(Formatting.BOLD));
         } else if (stack.getItem().equals(ModItems.CREDIT_KOLBENIK)) {
-            name.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x301934)).withFormatting(Formatting.BOLD));
+            name.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x9932CC)).withFormatting(Formatting.BOLD));
         }
         return name;
     }
