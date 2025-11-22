@@ -3,7 +3,7 @@
   "id": "alchemica",
   "version": "${version}",
   "name": "Alchemica",
-  "description": "Test description",
+  "description": "A Mod about Alchemy... and stuff.",
   "authors": [
     "Lunar_sh",
     "Kolbenik"
@@ -28,6 +28,7 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
+    "java": ">=17",
     "minecraft": "${minecraft_version}"
   }
 }
