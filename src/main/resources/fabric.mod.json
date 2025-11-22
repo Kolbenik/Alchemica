@@ -22,9 +22,7 @@
       "sh.luunar.alchemica.client.AlchemicaClient"
     ]
   },
-  "mixins": [
-    "alchemica.mixins.json"
-  ],
+  "mixins": [ "alchemica.mixins.json" ],
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",

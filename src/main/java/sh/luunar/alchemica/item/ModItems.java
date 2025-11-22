@@ -27,6 +27,8 @@ public class ModItems {
     public static final Item ANTENNA = registerItem("antenna",
             new Item(new FabricItemSettings()));
 
+    public static final Item ALCHEMICAL_ASH = registerItem("alchemical_ash",
+            new Item(new FabricItemSettings()));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(Alchemica.MOD_ID, name), item);
