@@ -4,7 +4,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +17,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import sh.luunar.alchemica.effect.ModEffects;
 
 import java.util.List;
 
@@ -34,13 +34,30 @@ public class AlcoholItem extends Item {
         }
 
         if (!world.isClient) {
-            // THE DRUNK EFFECTS
-            // Nausea (Confusion) for 30 seconds
-            user.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 600, 0));
-            // Strength (Drunken Brawl) for 1 minute
-            user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 1200, 0));
-            // Slowness (Stumbling) for 15 seconds
-            user.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 300, 1));
+            // --- ALCOHOL STAGE LOGIC ---
+            int currentAmp = -1;
+            int duration = 1200; // 60 Seconds per drink
+
+            // 1. Check if already under the influence
+            if (user.hasStatusEffect(ModEffects.DRUNK)) {
+                StatusEffectInstance currentEffect = user.getStatusEffect(ModEffects.DRUNK);
+                if (currentEffect != null) {
+                    currentAmp = currentEffect.getAmplifier();
+                }
+            }
+
+            // 2. Increase Stage (Cap at 3, which is fatal anyway)
+            int nextAmp = Math.min(3, currentAmp + 1);
+
+            // 3. Apply the new level (Overwrites the old one)
+            // Stage 0 = Tipsy
+            // Stage 1 = Drunk
+            // Stage 2 = Wasted
+            // Stage 3 = Fatal
+            user.addStatusEffect(new StatusEffectInstance(ModEffects.DRUNK, duration, nextAmp));
+
+            // Optional: Play a "Burp" or "Hiccup" sound occasionally?
+            // For now, the effect handles the gameplay.
         }
 
         if (user instanceof PlayerEntity player && !player.getAbilities().creativeMode) {
@@ -57,7 +74,7 @@ public class AlcoholItem extends Item {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        return 32; // Standard drink time
+        return 32;
     }
 
     @Override
@@ -67,6 +84,8 @@ public class AlcoholItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.literal("99% Pure. Do not operate heavy machinery.").formatted(Formatting.DARK_RED).formatted(Formatting.ITALIC));
+        tooltip.add(Text.empty());
+        tooltip.add(Text.literal("Industrial Grade.").formatted(Formatting.GRAY));
+        tooltip.add(Text.literal("Warning: Stage 4 is fatal.").formatted(Formatting.DARK_RED).formatted(Formatting.ITALIC));
     }
 }

@@ -6,6 +6,11 @@
   "item.alchemica.vinegar": "Distilled Vinegar",
   "item.alchemica.alcohol": "Alcohol",
 
+  "effect.alchemica.drunk": "Drunk",
+
+  "death.attack.alcohol_poisoning": "%1$s drank too much.",
+  "death.attack.alcohol_poisoning.player": "%1$s drank too much while fighting %2$s.",
+
   "block.alchemica.rusted_iron_block": "Rusted Iron Block",
   "block.alchemica.vinegar_cauldron": "You shouldn't have this...",
 

@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeveledCauldronBlock;
@@ -43,6 +44,8 @@ public class Alchemica implements ModInitializer {
         ModBlocks.registerModBlocks();
         ModRecipes.registerRecipes();
         ModMessages.registerS2CMessages();
+
+        sh.luunar.alchemica.effect.ModEffects.registerEffects();
 
         // --- THE INTERACTION HUB ---
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
@@ -155,7 +158,8 @@ public class Alchemica implements ModInitializer {
 
         // Register Chat/Antenna Logic
         AllowChatMessageHandler handler = new AllowChatMessageHandler();
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(handler);
+       // ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(handler);
+        ClientSendMessageEvents.ALLOW_CHAT.register(handler);     // <--- NEW CLIENT LINE
         ClientSendMessageEvents.ALLOW_COMMAND.register(handler);
 
         // Logs
@@ -166,5 +170,6 @@ public class Alchemica implements ModInitializer {
         LOGGER.info("I give a fuck about Performance rn!");
         LOGGER.info("I'm a bit tired rn.");
         LOGGER.info("Uh... now Vinegar?");
+        LOGGER.info("YOU CAN GET DRUNK!!! YIPPAAA!!");
     }
 }
