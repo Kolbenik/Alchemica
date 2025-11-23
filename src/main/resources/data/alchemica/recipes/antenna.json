@@ -26,5 +26,5 @@
   "result": {
     "item": "alchemica:antenna"
   },
-  "show_notification": true
+  "show_notification": false
 }
