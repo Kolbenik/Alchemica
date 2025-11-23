@@ -1,0 +1,27 @@
+{
+  "parent": "alchemica:brewing/root",
+  "display": {
+    "icon": {
+      "item": "alchemica:alcohol"
+    },
+    "title": {
+      "text": "Moonshine"
+    },
+    "description": {
+      "text": "Distill pure Alcohol. Don't let the authorities find out."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "has_alcohol": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": [ "alchemica:alcohol" ] }
+        ]
+      }
+    }
+  }
+}

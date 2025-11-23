@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "alchemica:vinegar"
+    },
+    "title": {
+      "text": "Distillation"
+    },
+    "description": {
+      "text": "Begin your journey into fermentation. Brew Vinegar in a cauldron."
+    },
+    "background": "minecraft:textures/block/packed_mud.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "has_vinegar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": [ "alchemica:vinegar" ] }
+        ]
+      }
+    }
+  }
+}

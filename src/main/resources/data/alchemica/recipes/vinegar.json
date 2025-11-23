@@ -1,0 +1,15 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "output": {
+    "item": "alchemica:vinegar",
+    "count": 1
+  }
+}

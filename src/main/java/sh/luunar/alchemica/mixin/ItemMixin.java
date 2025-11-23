@@ -9,6 +9,7 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,11 +25,20 @@ public class ItemMixin {
 
     // --- VISUALS: ONLY FOOD ROT ---
     @Inject(method = "appendTooltip", at = @At("HEAD"))
-    private void alchemicaAddTooltips(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
+    private void alchemica$addTooltips(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         if (world == null) return;
 
-        // Only Rotting Food Tooltips
+        // ROT TOOLTIP
         if (stack.isFood() && !stack.isOf(Items.ROTTEN_FLESH)) {
+
+            // 1. CHECK IF PRESERVED
+            if (stack.hasNbt() && stack.getNbt().getBoolean("alchemica_preserved")) {
+                tooltip.add(Text.empty());
+                tooltip.add(Text.literal("Preserved in Alcohol").formatted(Formatting.AQUA));
+                return; // Skip the rot timer!
+            }
+
+            // 2. Otherwise show Rot
             float percent = RotUtils.getRotPercentage(stack, world);
             tooltip.add(Text.empty());
             tooltip.add(RotUtils.getRotStatus(percent));

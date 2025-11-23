@@ -17,9 +17,11 @@ public class ModItemGroup {
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.alchemica"))
                     .icon(() -> new ItemStack(ModItems.ICON_ITEM))
                     .entries((displayContext, entries) -> {
-                                entries.add(ModItems.ANTENNA);
                                 entries.add(ModItems.CREDIT_KOLBENIK);
                                 entries.add(ModItems.CREDIT_LUNAR);
+                                entries.add(ModItems.ANTENNA);
+                                entries.add(ModItems.VINEGAR);
+                                entries.add(ModItems.ALCOHOL);
                                 entries.add(ModItems.ALCHEMICAL_ASH);
                                 entries.add(ModBlocks.RUSTED_IRON_BLOCK);
                     }).build());

@@ -33,20 +33,28 @@ public class RotUtils {
 
         NbtCompound nbt = stack.getOrCreateNbt();
 
-        // Initialize time if missing
+        // --- NEW: Check for Preservation ---
+        if (nbt.getBoolean("alchemica_preserved")) {
+            return false; // It's pickled! It lasts forever.
+        }
+        // -----------------------------------
+
         if (!nbt.contains(ROT_KEY)) {
             nbt.putLong(ROT_KEY, world.getTime());
             return false;
         }
 
-        // Check if time is up
         if (getRotPercentage(stack, world) >= 1.0f) {
             return true;
         }
         return false;
     }
 
+    // Update the Status Text to show it's safe
     public static Text getRotStatus(float percent) {
+        // We can't easily check NBT here without passing the stack,
+        // but ItemMixin calls this. Let's make a new method or handle it in Mixin.
+        // Actually, let's just leave this for the % calculation and handle the text in the Mixin.
         if (percent < 0.2) return Text.literal("Fresh").formatted(Formatting.GREEN);
         if (percent < 0.5) return Text.literal("Stale").formatted(Formatting.YELLOW);
         if (percent < 0.8) return Text.literal("Decaying").formatted(Formatting.GOLD);

@@ -10,6 +10,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import sh.luunar.alchemica.Alchemica;
+import sh.luunar.alchemica.block.custom.VinegarCauldronBlock;
 
 public class ModBlocks {
 
@@ -31,6 +32,10 @@ public class ModBlocks {
         return Registry.register(Registries.ITEM, new Identifier(Alchemica.MOD_ID, name),
                 new BlockItem(block, new FabricItemSettings()));
     }
+
+    // Register Vinegar Cauldron (No ItemGroup needed, as we transform it in-world)
+    public static final Block VINEGAR_CAULDRON = registerBlock("vinegar_cauldron",
+            new VinegarCauldronBlock(FabricBlockSettings.copyOf(Blocks.CAULDRON)));
 
     public static void registerModBlocks() {
         Alchemica.LOGGER.info("Registering Mod Blocks for " + Alchemica.MOD_ID);

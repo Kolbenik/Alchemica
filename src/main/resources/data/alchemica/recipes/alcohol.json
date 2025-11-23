@@ -1,0 +1,15 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    {
+      "item": "alchemica:vinegar"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "output": {
+    "item": "alchemica:alcohol",
+    "count": 1
+  }
+}

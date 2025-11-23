@@ -1,0 +1,25 @@
+{
+  "parent": "alchemica:brewing/moonshine",
+  "display": {
+    "icon": {
+      "item": "minecraft:cooked_beef"
+    },
+    "title": {
+      "text": "Pickled"
+    },
+    "description": {
+      "text": "Preserve food using Alcohol to stop the rot forever."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "crafted_preservation": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "alchemica:preservation"
+      }
+    }
+  }
+}
