@@ -45,6 +45,8 @@ public class Alchemica implements ModInitializer {
         ModRecipes.registerRecipes(); // <--- CRITICAL: Registers the "alchemy" recipe type
         ModMessages.registerS2CMessages();
 
+
+
         // 2. The Dynamic "Stirring" Ritual
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (world.isClient) return ActionResult.PASS;
