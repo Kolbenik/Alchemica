@@ -1,64 +1,69 @@
 package sh.luunar.alchemica.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.ColorHelper; // Use Minecraft's Helper!
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 public class RustUtils {
 
-    public static final long RUST_TIME = 24000L;
-    public static final String RUST_KEY = "alchemica_rust_start";
+    // 1200 ticks = 1 minute of rain exposure
+    public static final long RUST_MAX_AGE = 1200L;
 
-    // Colors (ARGB format)
-    private static final int COLOR_FRESH = 0xFFFFFFFF;  // White
-    private static final int COLOR_RUSTED = 0xFFB87333; // Copper Orange
+    /**
+     * Logic: Tick the Rusting Process
+     * Returns TRUE if the item fully rusted.
+     */
+    public static boolean tickRust(ItemStack stack, World world, Entity entity) {
+        if (world.isClient) return false;
+        if (!stack.isOf(Items.IRON_INGOT)) return false;
 
-    public static float getRustPercentage(ItemStack stack, long worldTime) {
-        if (!stack.hasNbt() || !stack.getNbt().contains(RUST_KEY)) return 0.0f;
+        // 1. Environment Checks
+        if (!world.isRaining()) return false;
 
-        long startTime = stack.getNbt().getLong(RUST_KEY);
-        long age = worldTime - startTime;
-        return Math.min(1.0f, Math.max(0.0f, (float) age / (float) RUST_TIME));
-    }
-
-    public static int getItemColor(ItemStack stack, int tintIndex) {
-        if (tintIndex != 0) return 0xFFFFFFFF;
-
-        // Debug: If no NBT, return strict White (visible)
-        if (!stack.hasNbt() || !stack.getNbt().contains("rust_progress")) {
-            return 0xFFFFFFFF;
+        // 2. Biome Check
+        Biome biome = world.getBiome(entity.getBlockPos()).value();
+        if (biome.getPrecipitation(entity.getBlockPos()) != Biome.Precipitation.RAIN) {
+            return false;
         }
-
-        float progress = stack.getNbt().getFloat("rust_progress");
-
-        // Use Minecraft's built-in Color Lerp
-        return ColorHelper.Argb.lerp(progress, COLOR_FRESH, COLOR_RUSTED);
-    }
-
-    public static boolean isImmune(ItemStack stack) {
-        return stack.hasNbt() && stack.getNbt().getBoolean("AlchemicaWaxed");
-    }
-
-    public static void tickRust(ItemStack stack, World world) {
-        if (world.isClient) return;
-        if (!stack.isOf(Items.IRON_INGOT) && !stack.isOf(Items.IRON_BLOCK)) return;
-
-        // If Waxed/Immune, stop here.
-        if (isImmune(stack)) return;
 
         NbtCompound nbt = stack.getOrCreateNbt();
 
-        if (!nbt.contains(RUST_KEY)) {
-            nbt.putLong(RUST_KEY, world.getTime());
-            nbt.putFloat("rust_progress", 0f);
-            return;
-        }
+        // 3. Increment Rust Counter
+        long currentAge = nbt.getLong("rust_age");
+        currentAge++;
+        nbt.putLong("rust_age", currentAge);
 
-        float percent = getRustPercentage(stack, world.getTime());
-        nbt.putFloat("rust_progress", percent);
+        // 4. Update Visual Progress for Tooltip
+        float progress = Math.min(1.0f, (float) currentAge / (float) RUST_MAX_AGE);
+        nbt.putFloat("rust_progress", progress);
+
+        // 5. Done?
+        return progress >= 1.0f;
     }
 
+    /**
+     * Visuals: Tooltip Text
+     */
+    public static Text getRustTooltip(ItemStack stack) {
+        if (!stack.hasNbt() || !stack.getNbt().contains("rust_progress")) {
+            return null; // Don't show anything if it hasn't started rusting
+        }
 
+        float progress = stack.getNbt().getFloat("rust_progress");
+        int percentage = (int) (progress * 100);
+
+        if (percentage <= 0) return null;
+
+        // Color coding: Gray -> Orange -> Red
+        Formatting color = Formatting.GRAY;
+        if (percentage > 50) color = Formatting.GOLD;
+        if (percentage > 90) color = Formatting.RED;
+
+        return Text.literal("Corrosion: " + percentage + "%").formatted(color);
+    }
 }

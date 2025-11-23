@@ -16,6 +16,12 @@ public class ModBlocks {
     public static final Block TEST_BLOCK = registerBlock("test_block",
             new Block(FabricBlockSettings.copyOf(Blocks.STONE)));
 
+    // --- NEW BLOCK ---
+    // Copies properties of Iron Block (requires pickaxe, sounds like metal)
+    public static final Block RUSTED_IRON_BLOCK = registerBlock("rusted_iron_block",
+            new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(5.0f, 6.0f)));
+    // -----------------
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, new Identifier(Alchemica.MOD_ID, name), block);

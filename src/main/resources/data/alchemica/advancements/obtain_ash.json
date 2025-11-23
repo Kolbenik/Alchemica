@@ -1,0 +1,29 @@
+{
+  "parent": "alchemica:root",
+  "display": {
+    "icon": {
+      "item": "alchemica:alchemical_ash"
+    },
+    "title": {
+      "text": "Dust to Dust"
+    },
+    "description": {
+      "text": "Fail a transmutation. Stir Iron and Gold Nuggets in the boiling water... and face the consequences."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "has_ash": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alchemica:alchemical_ash" ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "parent": "alchemica:root",
+  "display": {
+    "icon": {
+      "item": "alchemica:antenna"
+    },
+    "title": {
+      "text": "Signal Lost"
+    },
+    "description": {
+      "text": "Construct an Antenna to break the silence. Without it, no one can hear you scream."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "has_antenna": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alchemica:antenna" ]
+          }
+        ]
+      }
+    }
+  }
+}

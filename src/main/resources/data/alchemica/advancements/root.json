@@ -1,0 +1,45 @@
+{
+  "display": {
+    "icon": {
+      "item": "alchemica:icon"
+    },
+    "title": {
+      "text": "Alchemica"
+    },
+    "description": {
+      "text": "Prepare the vessel. Place a Cauldron over a lit Campfire."
+    },
+    "background": "minecraft:textures/block/deepslate_tiles.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "has_campfire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "minecraft:campfire" ]
+          }
+        ]
+      }
+    },
+    "has_cauldron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "minecraft:cauldron" ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_campfire",
+      "has_cauldron"
+    ]
+  ]
+}
