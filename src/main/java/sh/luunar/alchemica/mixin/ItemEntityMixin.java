@@ -6,7 +6,6 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
@@ -27,7 +26,7 @@ public abstract class ItemEntityMixin extends Entity {
     @Shadow public abstract void setStack(ItemStack stack);
 
     @Inject(method = "tick", at = @At("TAIL"))
-    private void alchemica$rustInWater(CallbackInfo ci) {
+    private void alchemicaRustInWater(CallbackInfo ci) {
         if (this.getWorld().isClient) return;
 
         ItemStack stack = this.getStack();

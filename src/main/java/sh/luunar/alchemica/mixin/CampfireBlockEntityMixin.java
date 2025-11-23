@@ -17,7 +17,7 @@ public class CampfireBlockEntityMixin {
 
     // CLIENT SIDE ONLY: Visual particles for the ritual
     @Inject(method = "clientTick", at = @At("TAIL"))
-    private static void alchemica$renderRitualParticles(World world, BlockPos pos, BlockState state, CampfireBlockEntity blockEntity, CallbackInfo ci) {
+    private static void alchemicaRenderRitualParticles(World world, BlockPos pos, BlockState state, CampfireBlockEntity blockEntity, CallbackInfo ci) {
         // 1. Check if Campfire is Lit
         if (!state.get(net.minecraft.block.CampfireBlock.LIT)) {
             return;

@@ -24,7 +24,7 @@ public class ItemMixin {
 
     // --- VISUALS: ONLY FOOD ROT ---
     @Inject(method = "appendTooltip", at = @At("HEAD"))
-    private void alchemica$addTooltips(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
+    private void alchemicaAddTooltips(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         if (world == null) return;
 
         // Only Rotting Food Tooltips
@@ -38,7 +38,7 @@ public class ItemMixin {
 
     // --- LOGIC: ONLY FOOD ROT ---
     @Inject(method = "inventoryTick", at = @At("HEAD"))
-    private void alchemica$inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
+    private void alchemicaInventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
         if (world.isClient) return;
 
         if (RotUtils.tickRot(stack, world, entity)) {
