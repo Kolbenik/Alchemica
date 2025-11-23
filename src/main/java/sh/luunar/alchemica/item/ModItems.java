@@ -10,6 +10,7 @@ import sh.luunar.alchemica.Alchemica;
 import sh.luunar.alchemica.item.custom.AlchemicalAshItem;
 import sh.luunar.alchemica.item.custom.AlcoholItem;
 import sh.luunar.alchemica.item.custom.CreditItem;
+import sh.luunar.alchemica.item.custom.SoulTotemItem;
 
 public class ModItems {
 
@@ -28,6 +29,16 @@ public class ModItems {
     public static final Item ALCHEMICAL_ASH = registerItem("alchemical_ash",
             new AlchemicalAshItem(new FabricItemSettings()));
 
+    // 1. Oxalic Acid (For cleaning rust)
+    public static final Item OXALIC_ACID = registerItem("oxalic_acid",
+            new Item(new FabricItemSettings()));
+
+    // 2. Soul Ash (Infused with player life)
+    public static final Item SOUL_ASH = registerItem("soul_ash",
+            new Item(new FabricItemSettings()));
+
+    public static final Item SOUL_TOTEM = registerItem("soul_totem",
+            new SoulTotemItem(new FabricItemSettings().maxCount(1)));
 
 
     public static final Item VINEGAR = registerItem("vinegar",

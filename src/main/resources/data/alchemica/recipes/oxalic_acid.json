@@ -1,0 +1,11 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    { "item": "alchemica:vinegar" },
+    { "item": "alchemica:alchemical_ash" }
+  ],
+  "output": {
+    "item": "alchemica:oxalic_acid",
+    "count": 2
+  }
+}

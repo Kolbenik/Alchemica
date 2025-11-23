@@ -5,6 +5,8 @@
   "item.alchemica.alchemical_ash": "\u00A78Alchemical Ash",
   "item.alchemica.vinegar": "Distilled Vinegar",
   "item.alchemica.alcohol": "Alcohol",
+  "item.alchemica.soul_ash": "Soul Ash",
+  "item.alchemica.soul_totem": "Soul Totem",
 
   "effect.alchemica.drunk": "Drunk",
 
@@ -14,7 +16,10 @@
   "block.alchemica.rusted_iron_block": "Rusted Iron Block",
   "block.alchemica.vinegar_cauldron": "You shouldn't have this...",
 
-  "itemgroup.alchemica": "Alchemica",
+  "itemgroup.alchemica.items": "Alchemica: Items",
+  "itemgroup.alchemica.blocks": "Alchemica: Blocks",
+  "itemgroup.alchemica.credits": "Alchemica: Credits",
+
   "chat.alchemica.antenna_needed": "You can't send messages without an antenna!",
   "tooltip.credit_lunar": "The visionary mastermind and lead creative director behind this project",
   "tooltip.credit_kolbenik": "The lead developer translating concepts into functional reality",

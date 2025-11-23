@@ -1,0 +1,11 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    { "item": "minecraft:copper_ingot" },
+    { "item": "alchemica:oxalic_acid" }
+  ],
+  "output": {
+    "item": "minecraft:iron_ingot",
+    "count": 1
+  }
+}
