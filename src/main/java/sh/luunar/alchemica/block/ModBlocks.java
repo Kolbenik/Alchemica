@@ -37,6 +37,7 @@ public class ModBlocks {
     public static final Block VINEGAR_CAULDRON = registerBlock("vinegar_cauldron",
             new VinegarCauldronBlock(FabricBlockSettings.copyOf(Blocks.CAULDRON)));
 
+
     public static void registerModBlocks() {
         Alchemica.LOGGER.info("Registering Mod Blocks for " + Alchemica.MOD_ID);
     }

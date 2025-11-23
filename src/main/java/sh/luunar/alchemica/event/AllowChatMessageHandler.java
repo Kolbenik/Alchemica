@@ -8,8 +8,6 @@ import sh.luunar.alchemica.item.ModItems;
 
 public class AllowChatMessageHandler implements ClientSendMessageEvents.AllowChat, ClientSendMessageEvents.AllowCommand {
 
-    // --- FIXED METHOD NAME ---
-    // Was "allowChatMessage", must be "allowSendChatMessage"
     @Override
     public boolean allowSendChatMessage(String message) {
         MinecraftClient client = MinecraftClient.getInstance();
@@ -35,17 +33,18 @@ public class AllowChatMessageHandler implements ClientSendMessageEvents.AllowCha
     @Override
     public boolean allowSendCommandMessage(String command) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return true;
-
-        // Optional: Allow certain commands
-        if (command.startsWith("help") || command.startsWith("me")) {
-            // pass
-        }
-
-        // Antenna Check for commands
-        if (!client.player.getInventory().contains(ModItems.ANTENNA.getDefaultStack())) {
-            client.player.sendMessage(Text.translatable("chat.alchemica.antenna_needed"), true);
-            return false;
+        if (client.player == null) return false;
+        if (command.startsWith("say") || command.startsWith("me") || command.startsWith("msg") || command.startsWith("tellraw") || command.startsWith("tell")) {
+            if(!client.player.getInventory().contains(ModItems.ANTENNA.getDefaultStack())) {
+                client.player.sendMessage(Text.translatable("chat.alchemica.antenna_needed"), true);
+                return false;
+            }
+            if (client.player.hasStatusEffect(ModEffects.DRUNK)) {
+                if (client.player.getStatusEffect(ModEffects.DRUNK).getAmplifier() >= 2) {
+                    client.player.sendMessage(Text.literal("You are too drunk to speak properly..."), true);
+                    return false;
+                }
+            }
         }
 
         return true;
