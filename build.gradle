@@ -1,6 +1,25 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    // Change 1.6-SNAPSHOT to 1.8-SNAPSHOT (or 1.9-SNAPSHOT)
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id 'maven-publish'
+    id 'io.github.ladysnake.chenille' version '0.13.1'
+}
+
+chenille {
+    customLicense = rootProject.file("LICENSE")
+    javaVersion = 17
+    configurePublishing {
+        withLadysnakeMaven()
+        withModrinthRelease()
+    }
+}
+
+modrinth {
+    dependencies {
+        required.project "fabric-api"
+        embedded.project "cardinal-components-api"
+        embedded.project "tooltipfix"
+    }
 }
 
 version = project.mod_version
@@ -11,20 +30,24 @@ base {
 }
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
-
-    // Modrinth
     maven { url "https://api.modrinth.com/maven" }
 
-    // Mod Menu
-    maven { url "https://maven.terraformersmc.com/releases/" }
+    // Cardinal Components
+    maven {
+        name = 'Ladysnake Mods'
+        url = 'https://maven.ladysnake.org/releases'
+    }
 
+    // --- NEW: The Correct Datasync Repo ---
+    maven { url "https://maven.uuid.gg/releases" }
+    // -------------------------------------
+
+    // Keep these if you use them
+    chenille.repositories.ladysnake()
+    chenille.repositories.terraformers()
+    chenille.repositories.modrinth()
 }
 
 fabricApi {
@@ -34,20 +57,25 @@ fabricApi {
 }
 
 dependencies {
-    // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    //Cloth Config API
+
     modApi "me.shedaniel.cloth:cloth-config-fabric:11.1.136"
-    //Mod Menu
     modApi "com.terraformersmc:modmenu:7.2.2"
 
+    modIncludeApi "maven.modrinth:tooltipfix:${tooltipfix_version}"
 
+    // Cardinal Components (Using correct group ID)
+    modIncludeApi "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
+    modIncludeApi "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modIncludeApi "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${cardinal_components_version}"
 
+    modIncludeApi "maven.modrinth:midnightlib:${midnightlib_version}"
+
+    // Ratatouille (Let it resolve its own children)
+    modImplementation "dev.doctor4t:ratatouille:${project.ratatouille_version}"
 }
 
 
@@ -93,14 +121,18 @@ jar {
     }
 }
 
+
+
 // configure the maven publication
-publishing {
+// DELETE THIS BLOCK
+/*
     publications {
         create("mavenJava", MavenPublication) {
             artifactId = project.archives_base_name
             from components.java
         }
     }
+*/
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
@@ -109,4 +141,4 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
-}
+
