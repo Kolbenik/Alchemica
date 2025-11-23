@@ -20,6 +20,9 @@
     ],
     "client": [
       "sh.luunar.alchemica.client.AlchemicaClient"
+    ],
+    "rei_client": [
+      "sh.luunar.alchemica.compat.rei.AlchemicaREIPlugin"
     ]
   },
   "mixins": [ "alchemica.mixins.json" ],

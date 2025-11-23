@@ -1,0 +1,11 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    { "item": "minecraft:coal_block" },
+    { "item": "alchemica:soul_ash" }
+  ],
+  "output": {
+    "item": "minecraft:diamond",
+    "count": 1
+  }
+}

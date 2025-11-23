@@ -76,6 +76,11 @@ dependencies {
 
     // Ratatouille (Let it resolve its own children)
     modImplementation "dev.doctor4t:ratatouille:${project.ratatouille_version}"
+
+    // --- ADD THESE LINES FOR REI ---
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modRuntimeOnly "dev.architectury:architectury-fabric:9.1.12"
 }
 
 
