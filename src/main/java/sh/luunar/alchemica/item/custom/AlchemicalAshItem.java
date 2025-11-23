@@ -32,7 +32,7 @@ public class AlchemicalAshItem extends Item {
 
         if (state.isIn(ModTags.Blocks.IMMUNE_TO_RUST)) {
             if(!world.isClient)
-                context.getPlayer().sendMessage(Text.literal("Protected from corrosion."));
+                context.getPlayer().sendMessage(Text.literal("Protected from corrosion"), true);
             return ActionResult.FAIL;
         }
 
