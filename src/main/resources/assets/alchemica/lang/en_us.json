@@ -1,11 +1,10 @@
 {
   "item.alchemica.credit_kolbenik": "Kolbenik",
   "item.alchemica.credit_lunar": "Lunar",
-  "item.alchemica.test": "Test",
   "item.alchemica.antenna": "Antenna",
   "item.alchemica.alchemical_ash": "\u00A78Alchemical Ash",
 
-  "block.alchemica.test_block": "Test Block",
+  "block.alchemica.rusted_iron_block": "Rusted Iron Block",
 
   "itemgroup.alchemica": "Alchemica",
   "chat.alchemica.antenna_needed": "You can't send messages without an antenna!",
