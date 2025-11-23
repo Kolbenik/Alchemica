@@ -21,8 +21,7 @@ public class ModItemGroup {
                                 entries.add(ModItems.CREDIT_KOLBENIK);
                                 entries.add(ModItems.CREDIT_LUNAR);
                                 entries.add(ModItems.ALCHEMICAL_ASH);
-                                entries.add(ModItems.TEST_ITEM);
-                                entries.add(ModBlocks.TEST_BLOCK);
+                                entries.add(ModBlocks.RUSTED_IRON_BLOCK);
                     }).build());
 
     public static void registerModItemGroups() {
