@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": {
+      "item": "minecraft:copper_ingot"
+    },
+    "X": {
+      "item": "minecraft:lightning_rod"
+    },
+    "W": {
+      "item": "minecraft:redstone"
+    },
+    "Y": {
+      "item": "minecraft:copper_block"
+    },
+    "Z": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "###",
+    " X ",
+    "WYZ"
+  ],
+  "result": {
+    "item": "alchemica:antenna"
+  },
+  "show_notification": false
+}
