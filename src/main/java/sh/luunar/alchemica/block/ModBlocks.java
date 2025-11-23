@@ -14,9 +14,6 @@ import sh.luunar.alchemica.block.custom.VinegarCauldronBlock;
 
 public class ModBlocks {
 
-    public static final Block TEST_BLOCK = registerBlock("test_block",
-            new Block(FabricBlockSettings.copyOf(Blocks.STONE)));
-
     // --- NEW BLOCK ---
     // Copies properties of Iron Block (requires pickaxe, sounds like metal)
     public static final Block RUSTED_IRON_BLOCK = registerBlock("rusted_iron_block",
