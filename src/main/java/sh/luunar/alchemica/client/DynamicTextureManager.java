@@ -21,8 +21,6 @@ public class DynamicTextureManager {
         if (CACHE.containsKey(url)) {
             return CACHE.get(url);
         }
-
-        // Platzhalter setzen
         //CACHE.put(url, FALLBACK);
 
         CompletableFuture.runAsync(() -> {
@@ -31,23 +29,12 @@ public class DynamicTextureManager {
                 try (InputStream stream = imageUrl.openStream()) {
                     NativeImage image = NativeImage.read(stream);
 
-                    // Alles was Texturen registriert, MUSS auf dem Main-Thread passieren
                     MinecraftClient.getInstance().execute(() -> {
 
-                        // 1. Die Textur erstellen
                         NativeImageBackedTexture dynamicTexture = new NativeImageBackedTexture(image);
-
-                        // 2. DEN FILTER AUSSCHALTEN!
-                        // false = kein Blur (Bilinear Filter aus)
-                        // false = keine Mipmaps (kleinere Versionen aus)
-                        // Das sorgt für den "Pixel-Art" Look und macht die Kanten massiv.
-                        dynamicTexture.setFilter(false, false); // <--- HIER IST DAS WICHTIGSTE!
-
-                        // 3. Registrieren
+                        dynamicTexture.setFilter(false, false);
                         Identifier id = new Identifier("alchemica", "dynamic/" + url.hashCode());
                         MinecraftClient.getInstance().getTextureManager().registerTexture(id, dynamicTexture);
-
-                        // 4. Cache updaten
                         CACHE.put(url, id);
                     });
                 }
