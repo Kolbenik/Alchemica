@@ -1,11 +1,15 @@
 package sh.luunar.alchemica.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import sh.luunar.alchemica.item.ModItems;
 
 public class AlchemicaClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        // Empty! We are NOT registering any ColorProviders anymore.
-        // This ensures Iron Ingots render normally.
+        WebItemRenderer renderer = new WebItemRenderer();
+
+        // Für beide Items registrieren
+        BuiltinItemRendererRegistry.INSTANCE.register(ModItems.CREDIT_KOLBENIK, renderer);
     }
 }
