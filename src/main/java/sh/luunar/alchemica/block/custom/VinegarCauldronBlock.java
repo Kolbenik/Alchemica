@@ -89,4 +89,9 @@ public class VinegarCauldronBlock extends Block {
             }
         }
     }
+
+    @Override
+    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+        return new ItemStack(Items.CAULDRON);
+    }
 }
