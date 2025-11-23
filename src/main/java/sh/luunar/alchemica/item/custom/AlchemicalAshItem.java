@@ -14,6 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import sh.luunar.alchemica.Alchemica;
 import sh.luunar.alchemica.block.ModBlocks;
 import sh.luunar.alchemica.util.ModTags;
 
@@ -29,30 +30,23 @@ public class AlchemicalAshItem extends Item {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        // --- 1. IRON BLOCK CONVERSION (The only way to make a block rust) ---
-        if (state.isOf(Blocks.IRON_BLOCK)) {
-            // Check if protected by tag
-            if (state.isIn(ModTags.Blocks.IMMUNE_TO_RUST)) {
-                if(world.isClient) context.getPlayer().sendMessage(Text.literal("Protected from corrosion."), true);
-                return ActionResult.FAIL;
-            }
+        if (state.isIn(ModTags.Blocks.IMMUNE_TO_RUST)) {
+            if(!world.isClient)
+                context.getPlayer().sendMessage(Text.literal("Protected from corrosion."));
+            return ActionResult.FAIL;
+        }
 
+        if (state.isIn(ModTags.Blocks.RUSTING)) {
             if (!world.isClient) {
-                // Swap to Rusted Block
                 world.setBlockState(pos, ModBlocks.RUSTED_IRON_BLOCK.getDefaultState());
 
-                // Effects: Sound of metal corroding
                 world.playSound(null, pos, SoundEvents.BLOCK_COPPER_BREAK, SoundCategory.BLOCKS, 1f, 0.5f);
-                // Particles
                 ((ServerWorld)world).spawnParticles(ParticleTypes.ASH, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, 10, 0.2, 0.2, 0.2, 0.05);
-
-                // Consume Ash
                 context.getStack().decrement(1);
             }
             return ActionResult.SUCCESS;
         }
 
-        // --- 2. CROP GAMBLE (Existing Feature) ---
         if (block instanceof Fertilizable fertilizable) {
             if (fertilizable.isFertilizable(world, pos, state, world.isClient)) {
                 if (world.isClient) {
