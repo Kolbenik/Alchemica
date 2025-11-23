@@ -7,6 +7,7 @@
   "item.alchemica.alcohol": "Alcohol",
 
   "block.alchemica.rusted_iron_block": "Rusted Iron Block",
+  "block.alchemica.vinegar_cauldron": "You shouldn't have this...",
 
   "itemgroup.alchemica": "Alchemica",
   "chat.alchemica.antenna_needed": "You can't send messages without an antenna!",
