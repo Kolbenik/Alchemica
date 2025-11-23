@@ -116,5 +116,6 @@ public class Alchemica implements ModInitializer {
         });
 
         LOGGER.info("Alchemica loaded! Rituals armed.");
+        LOGGER.info("I ADDED THE MULTIBLOCK BITCH!!!");
     }
 }
