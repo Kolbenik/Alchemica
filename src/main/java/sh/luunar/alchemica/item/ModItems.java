@@ -21,10 +21,10 @@ public class ModItems {
             new CreditItem(new FabricItemSettings().maxCount(1)));
 
     public static final Item CREDIT_LUNAR = registerItem("credit_lunar",
-            new CreditItem(new FabricItemSettings()));
+            new CreditItem(new FabricItemSettings().maxCount(1)));
 
     public static final Item ANTENNA = registerItem("antenna",
-            new Item(new FabricItemSettings()));
+            new Item(new FabricItemSettings().maxCount(1)));
 
     public static final Item ALCHEMICAL_ASH = registerItem("alchemical_ash",
             new AlchemicalAshItem(new FabricItemSettings()));
