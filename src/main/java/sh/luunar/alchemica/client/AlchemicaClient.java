@@ -2,6 +2,7 @@ package sh.luunar.alchemica.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import sh.luunar.alchemica.client.render.WebItemRenderer;
 import sh.luunar.alchemica.item.ModItems;
 
 public class AlchemicaClient implements ClientModInitializer {

@@ -1,4 +1,4 @@
-package sh.luunar.alchemica.client;
+package sh.luunar.alchemica.client.render;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;

@@ -1,4 +1,4 @@
-package sh.luunar.alchemica.client;
+package sh.luunar.alchemica.client.render;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.client.render.*;
@@ -14,7 +14,6 @@ public class WebItemRenderer implements BuiltinItemRendererRegistry.DynamicItemR
 
     @Override
     public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-
         String url = ItemTextureLogic.getUrl(stack);
         Identifier texture = DynamicTextureManager.getTexture(url);
 
