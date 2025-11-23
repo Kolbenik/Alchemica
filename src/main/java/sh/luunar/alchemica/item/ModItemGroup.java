@@ -48,8 +48,8 @@ public class ModItemGroup {
                     .displayName(Text.translatable("itemgroup.alchemica.credits"))
                     .icon(() -> new ItemStack(ModItems.CREDIT_LUNAR)) // Use your face/item
                     .entries((displayContext, entries) -> {
-                        entries.add(ModItems.CREDIT_LUNAR);
                         entries.add(ModItems.CREDIT_KOLBENIK);
+                        entries.add(ModItems.CREDIT_LUNAR);
                         // Add any other "Dev" or "Debug" items here
                     }).build());
 
