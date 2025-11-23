@@ -1,0 +1,15 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:gold_nugget"
+    }
+  ],
+  "output": {
+    "item": "minecraft:gold_ingot",
+    "count": 1
+  }
+}

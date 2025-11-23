@@ -1,0 +1,12 @@
+{
+  "type": "alchemica:alchemy",
+  "ingredients": [
+    {
+      "item": "minecraft:rotten_flesh"
+    }
+  ],
+  "output": {
+    "item": "minecraft:leather",
+    "count": 1
+  }
+}

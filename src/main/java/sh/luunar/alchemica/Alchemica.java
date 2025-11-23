@@ -1,23 +1,21 @@
 package sh.luunar.alchemica;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import org.slf4j.Logger;
@@ -27,8 +25,12 @@ import sh.luunar.alchemica.event.AllowChatMessageHandler;
 import sh.luunar.alchemica.item.ModItemGroup;
 import sh.luunar.alchemica.item.ModItems;
 import sh.luunar.alchemica.networking.ModMessages;
+import sh.luunar.alchemica.recipe.AlchemyRecipe;
+import sh.luunar.alchemica.recipe.ModRecipes;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Alchemica implements ModInitializer {
     public static final String MOD_ID = "alchemica";
@@ -36,86 +38,105 @@ public class Alchemica implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        // 1. Register all your content
         ModItemGroup.registerModItemGroups();
-        ModItems.registerModItems(); // Make sure this is called!
+        ModItems.registerModItems();
         ModBlocks.registerModBlocks();
+        ModRecipes.registerRecipes(); // <--- CRITICAL: Registers the "alchemy" recipe type
         ModMessages.registerS2CMessages();
 
-        // --- THE STIRRING RITUAL LOGIC ---
+        // 2. The Dynamic "Stirring" Ritual
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            // 1. Check Server Side Only (Logic happens here)
             if (world.isClient) return ActionResult.PASS;
 
-            // 2. Check if holding a Stick
+            // Must hold a Stick
             ItemStack handStack = player.getStackInHand(hand);
             if (!handStack.isOf(Items.STICK)) return ActionResult.PASS;
 
-            // 3. Check if clicking a Water Cauldron
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
 
+            // Must be a Full Water Cauldron (Level 3)
             if (state.isOf(Blocks.WATER_CAULDRON) && state.get(LeveledCauldronBlock.LEVEL) == 3) {
 
-                // 4. Look for floating items inside the Cauldron
-                Box cauldronBox = new Box(pos).contract(0.1, 0.2, 0.1); // Inside the walls
+                // A. Scan for items inside the cauldron
+                Box cauldronBox = new Box(pos).contract(0.1, 0.2, 0.1);
                 List<ItemEntity> entities = world.getEntitiesByClass(ItemEntity.class, cauldronBox, e -> true);
 
-                ItemEntity ironEntity = null;
-                ItemEntity goldNuggetEntity = null;
+                if (entities.isEmpty()) return ActionResult.PASS;
 
-                // Scan the items to find our ingredients
-                for (ItemEntity entity : entities) {
-                    if (entity.getStack().isOf(Items.IRON_INGOT)) ironEntity = entity;
-                    if (entity.getStack().isOf(Items.GOLD_NUGGET)) goldNuggetEntity = entity;
+                // B. Convert Entities to a Temporary Inventory so RecipeManager can understand them
+                SimpleInventory inventory = new SimpleInventory(entities.size());
+                for (int i = 0; i < entities.size(); i++) {
+                    inventory.setStack(i, entities.get(i).getStack());
                 }
 
-                // 5. If we found BOTH ingredients
-                if (ironEntity != null && goldNuggetEntity != null) {
+                // C. Ask Minecraft: "Do these items match any JSON recipe in 'alchemica:alchemy'?"
+                Optional<AlchemyRecipe> match = world.getRecipeManager()
+                        .getFirstMatch(ModRecipes.ALCHEMY_TYPE, inventory, world);
 
-                    // --- ALCHEMY TIME ---
+                if (match.isPresent()) {
+                    AlchemyRecipe recipe = match.get();
 
-                    // Consume 1 of each
-                    ItemStack ironStack = ironEntity.getStack();
-                    ItemStack goldStack = goldNuggetEntity.getStack();
+                    // D. Consume Ingredients
+                    // (Iterates through recipe ingredients and removes 1 matching item from the cauldron for each)
+                    List<ItemEntity> toDiscard = new ArrayList<>();
 
-                    ironStack.decrement(1);
-                    goldStack.decrement(1);
+                    for (int i = 0; i < recipe.getIngredients().size(); i++) {
+                        for(ItemEntity entity : entities) {
+                            if(recipe.getIngredients().get(i).test(entity.getStack())) {
+                                entity.getStack().decrement(1);
+                                if(entity.getStack().isEmpty()) toDiscard.add(entity);
+                                break; // Found this ingredient, move to the next requirement
+                            }
+                        }
+                    }
 
-                    // Update or Kill the entities if stack is empty
-                    if (ironStack.isEmpty()) ironEntity.discard();
-                    if (goldStack.isEmpty()) goldNuggetEntity.discard();
+                    // Clear out empty item entities
+                    for(ItemEntity e : toDiscard) e.discard();
 
-                    // 50/50 Chance Calculation
+                    // E. The 50/50 Gamble
                     boolean success = world.random.nextFloat() < 0.5f;
 
                     if (success) {
-                        // SUCCESS: Spawn Gold Ingot
-                        ItemStack result = new ItemStack(Items.GOLD_INGOT);
-                        ItemEntity resultEntity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);
+                        // --- SUCCESS ---
+                        // Get the output defined in the JSON file
+                        ItemStack result = recipe.getOutput(world.getRegistryManager()).copy();
+
+                        ItemEntity resultEntity = new ItemEntity(world, pos.getX()+0.5, pos.getY()+1.0, pos.getZ()+0.5, result);
                         world.spawnEntity(resultEntity);
 
-                        // Effects
+                        // Magic chime sound & Sparkles
                         world.playSound(null, pos, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 1f, 1f);
-                        ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.1);
+                        ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.2, 0.2, 0.2, 0.1);
                     } else {
-                        // FAILURE: Spawn Ash
+                        // --- FAILURE ---
+                        // Always creates Ash
                         ItemStack result = new ItemStack(ModItems.ALCHEMICAL_ASH);
-                        ItemEntity resultEntity = new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);
+
+                        ItemEntity resultEntity = new ItemEntity(world, pos.getX()+0.5, pos.getY()+1.0, pos.getZ()+0.5, result);
                         world.spawnEntity(resultEntity);
 
-                        // Effects
+                        // Fizzle sound & Smoke
                         world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1f, 1f);
-                        ((ServerWorld) world).spawnParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.1);
+                        ((ServerWorld) world).spawnParticles(ParticleTypes.SMOKE, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.2, 0.2, 0.2, 0.1);
                     }
 
-                    return ActionResult.SUCCESS; // Swing the hand
+                    return ActionResult.SUCCESS;
                 }
             }
-
             return ActionResult.PASS;
         });
 
-        LOGGER.info("Alchemica loaded! Rituals armed.");
+        // 3. Register Chat/Antenna Logic
+        LOGGER.info("Registering Message Events for " + Alchemica.MOD_ID);
+        AllowChatMessageHandler handler = new AllowChatMessageHandler();
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register(handler);
+        ClientSendMessageEvents.ALLOW_COMMAND.register(handler);
+
+        // 4. The Grand Finale
+        LOGGER.info("Alchemica initialized!");
         LOGGER.info("I ADDED THE MULTIBLOCK BITCH!!!");
+        LOGGER.info("NOW WITH JSON!!!");
     }
 }
