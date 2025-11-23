@@ -1,4 +1,4 @@
-package sh.luunar.alchemica.client;
+package sh.luunar.alchemica.client.render;
 
 import net.minecraft.item.ItemStack;
 import sh.luunar.alchemica.item.ModItems;
