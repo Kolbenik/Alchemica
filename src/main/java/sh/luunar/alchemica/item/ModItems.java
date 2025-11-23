@@ -7,6 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import sh.luunar.alchemica.Alchemica;
+import sh.luunar.alchemica.item.custom.AlchemicalAshItem;
 import sh.luunar.alchemica.item.custom.CreditItem;
 
 public class ModItems {
@@ -28,7 +29,7 @@ public class ModItems {
             new Item(new FabricItemSettings()));
 
     public static final Item ALCHEMICAL_ASH = registerItem("alchemical_ash",
-            new Item(new FabricItemSettings()));
+            new AlchemicalAshItem(new FabricItemSettings()));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(Alchemica.MOD_ID, name), item);

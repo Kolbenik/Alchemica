@@ -140,5 +140,8 @@ public class Alchemica implements ModInitializer {
         LOGGER.info("Alchemica initialized!");
         LOGGER.info("I ADDED THE MULTIBLOCK BITCH!!!");
         LOGGER.info("NOW WITH JSON!!!");
+        LOGGER.info("HEY BITCH!!! I ADDED ROT MECHANIC!!");
+        LOGGER.info("I give a fuck about Performance rn!");
+
     }
 }
