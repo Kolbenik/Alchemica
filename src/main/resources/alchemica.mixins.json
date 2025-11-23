@@ -7,6 +7,9 @@
     "ItemMixin",
     "ItemEntityMixin"
   ],
+  "client": [
+    "GameRendererAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
