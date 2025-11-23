@@ -33,14 +33,14 @@ public class ItemMixin {
 
             // 1. CHECK IF PRESERVED
             if (stack.hasNbt() && stack.getNbt().getBoolean("alchemica_preserved")) {
-                tooltip.add(Text.empty());
+               // tooltip.add(Text.empty());
                 tooltip.add(Text.literal("Preserved in Alcohol").formatted(Formatting.AQUA));
                 return; // Skip the rot timer!
             }
 
             // 2. Otherwise show Rot
             float percent = RotUtils.getRotPercentage(stack, world);
-            tooltip.add(Text.empty());
+            //tooltip.add(Text.empty());
             tooltip.add(RotUtils.getRotStatus(percent));
             tooltip.add(RotUtils.getTimeRemaining(stack, world));
         }
