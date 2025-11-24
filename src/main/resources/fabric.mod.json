@@ -21,8 +21,8 @@
     "client": [
       "sh.luunar.alchemica.client.AlchemicaClient"
     ],
-    "rei_client": [
-      "sh.luunar.alchemica.compat.rei.AlchemicaREIPlugin"
+    "jei_mod_plugin": [
+      "sh.luunar.alchemica.compat.jei.AlchemicaJEIPlugin"
     ]
   },
   "mixins": [ "alchemica.mixins.json" ],

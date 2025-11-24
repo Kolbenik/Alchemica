@@ -49,13 +49,13 @@ public class AlchemicaJEIPlugin implements IModPlugin {
             registration.addRecipes(AlchemyCategory.TYPE, alchemyRecipes);
         }
 
-        // 2. Forbidden Rituals
+        // 2. Forbidden Rituals (Hardcoded)
         registration.addRecipes(BioAlchemyCategory.TYPE, List.of(
                 new BioAlchemyRecipeWrapper(ModItems.ALCHEMICAL_ASH, ModItems.SOUL_ASH),
                 new BioAlchemyRecipeWrapper(Items.EMERALD, Items.TOTEM_OF_UNDYING)
         ));
 
-        // 3. Info Tabs
+        // 3. Information Tabs
         addItemInfo(registration, new ItemStack(ModItems.ALCHEMICAL_ASH),
                 "Obtained as a byproduct of failed Alchemy.",
                 "Any transmutation has a 50% chance to fail, leaving only this ash behind.");
