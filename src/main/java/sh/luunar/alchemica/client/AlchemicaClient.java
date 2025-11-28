@@ -6,7 +6,10 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 public class AlchemicaClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        // Register the Drunk Shader Logic
+        // 1. Drunk Shader
         ClientTickEvents.END_CLIENT_TICK.register(new DrunkShaderHandler());
+
+        // 2. Antenna Broadcast (NEW)
+        ClientTickEvents.END_CLIENT_TICK.register(new AntennaSignalHandler());
     }
 }
