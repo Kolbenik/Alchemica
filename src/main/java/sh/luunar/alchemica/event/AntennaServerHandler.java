@@ -48,7 +48,7 @@ public class AntennaServerHandler implements ServerTickEvents.EndTick {
     public void onEndTick(MinecraftServer server) {
         // Run logic every 5 seconds (100 ticks)
         ticker++;
-        if (ticker < 100) return;
+        if (ticker < 1200) return;
         ticker = 0;
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
