@@ -13,10 +13,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import sh.luunar.alchemica.Alchemica;
-import sh.luunar.alchemica.item.custom.AlchemicalAshItem;
-import sh.luunar.alchemica.item.custom.AlcoholItem;
-import sh.luunar.alchemica.item.custom.CreditItem;
-import sh.luunar.alchemica.item.custom.SoulTotemItem;
+import sh.luunar.alchemica.item.custom.*;
 
 public class ModItems {
 
@@ -52,6 +49,11 @@ public class ModItems {
 
     public static final Item ALCOHOL = registerItem("alcohol",
             new AlcoholItem(new FabricItemSettings().maxCount(16))); // Stack to 16 like potions
+
+    public static final Item COPPER_DUST = registerItem("copper_dust", new Item(new FabricItemSettings()));
+    public static final Item IRON_DUST = registerItem("iron_dust", new Item(new FabricItemSettings()));
+    public static final Item DIAMOND_DUST = registerItem("diamond_dust", new Item(new FabricItemSettings()));
+    public static final Item SPLASH_MILK = registerItem("splash_milk", new SplashMilkItem(new FabricItemSettings().maxCount(16)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(Alchemica.MOD_ID, name), item);

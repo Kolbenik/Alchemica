@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": { "item": "minecraft:iron_ingot" },
+  "result": "alchemica:iron_dust",
+  "count": 1
+}

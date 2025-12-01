@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": { "item": "minecraft:diamond" },
+  "result": "alchemica:diamond_dust",
+  "count": 1
+}

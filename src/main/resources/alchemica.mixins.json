@@ -5,7 +5,8 @@
   "mixins": [
     "CampfireBlockEntityMixin",
     "ItemMixin",
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "StonecutterBlockMixin"
   ],
   "client": [
     "GameRendererAccessor",

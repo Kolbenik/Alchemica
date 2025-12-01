@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": { "item": "minecraft:copper_ingot" },
+  "result": "alchemica:copper_dust",
+  "count": 1
+}

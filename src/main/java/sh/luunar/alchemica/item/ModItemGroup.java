@@ -32,7 +32,11 @@ public class ModItemGroup {
                         entries.add(ModItems.ALCHEMICAL_ASH);
                         entries.add(ModItems.SOUL_ASH);
                         entries.add(ModItems.SOUL_TOTEM);
-                        // Add other pure items here
+                        //entries.add(ModItems.ICON_ITEM);
+                        entries.add(ModItems.COPPER_DUST);
+                        entries.add(ModItems.DIAMOND_DUST);
+                        entries.add(ModItems.IRON_DUST);
+                        entries.add(ModItems.SPLASH_MILK);
                     }).build());
 
     // TAB 2: BLOCKS (Cauldrons, Building Blocks)
