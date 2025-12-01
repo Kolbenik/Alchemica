@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2025 Lunar_sh, Kolbenik
+ *
+ * All rights reserved.
+ */
+
 package sh.luunar.alchemica.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2025 Lunar_sh, Kolbenik
+ *
+ * All rights reserved.
+ */
+
 package sh.luunar.alchemica.compat.jei;
 
 import mezz.jei.api.IModPlugin;
@@ -79,7 +85,9 @@ public class AlchemicaJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(Blocks.WATER_CAULDRON), AlchemyCategory.TYPE, BioAlchemyCategory.TYPE);
     }
 
+    // --- THE FIXED HELPER METHOD ---
     private void addItemInfo(IRecipeRegistration reg, ItemStack stack, String... lines) {
+        // We join the lines with a standard newline character
         reg.addIngredientInfo(stack, VanillaTypes.ITEM_STACK,
                 Text.literal(String.join("\n", lines)).formatted(Formatting.GRAY));
     }

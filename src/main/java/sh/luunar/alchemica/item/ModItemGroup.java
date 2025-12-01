@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2025 Lunar_sh, Kolbenik
+ *
+ * All rights reserved.
+ */
+
 package sh.luunar.alchemica.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;

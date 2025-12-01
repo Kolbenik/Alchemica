@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2025 Lunar_sh, Kolbenik
+ *
+ * All rights reserved.
+ */
+
 package sh.luunar.alchemica.item.custom;
 
 import net.minecraft.entity.effect.StatusEffects;
