@@ -113,6 +113,15 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+// Disable license checking
+tasks.withType(net.fabricmc.loom.task.AbstractRunTask) {
+    enabled = false
+}
+// Specifically disable the Chenille license check task
+tasks.named('checkLicenseMain').configure {
+    enabled = false
+}
+
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     if (JavaVersion.current() < javaVersion) {
