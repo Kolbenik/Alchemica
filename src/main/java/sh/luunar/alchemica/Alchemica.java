@@ -66,15 +66,24 @@ public class Alchemica implements ModInitializer {
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
 
-            // 1. VINEGAR CAULDRON CREATION
+            // -----------------------------------------------------------
+            // INTERACTION 1: VINEGAR + WATER CAULDRON (Create Vinegar Cauldron)
+            // -----------------------------------------------------------
             if (handStack.isOf(ModItems.VINEGAR) && state.isOf(Blocks.WATER_CAULDRON)) {
+
+                // 1. Transform to Vinegar Cauldron
                 world.setBlockState(pos, ModBlocks.VINEGAR_CAULDRON.getDefaultState());
+
+                // 2. Consume Vinegar / Give Bottle
                 if (!player.getAbilities().creativeMode) {
                     handStack.decrement(1);
                     player.getInventory().offerOrDrop(new ItemStack(Items.GLASS_BOTTLE));
                 }
+
+                // 3. Effects
                 world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
                 ((ServerWorld) world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 15, 0.3, 0.3, 0.3, 0.1);
+
                 return ActionResult.SUCCESS;
             }
 

@@ -1,5 +1,5 @@
 {
-  "parent": "alchemica:brewing/root",
+  "parent": "alchemica:preservation/preserve_food",
   "display": {
     "icon": {
       "item": "alchemica:alcohol"
@@ -8,9 +8,9 @@
       "text": "Moonshine"
     },
     "description": {
-      "text": "Distill pure Alcohol. Don't let the authorities find out."
+      "text": "Now that survival is secured, distill the vinegar with sugar to create potent Alcohol."
     },
-    "frame": "goal",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true
   },

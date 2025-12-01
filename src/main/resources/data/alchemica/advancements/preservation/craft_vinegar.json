@@ -1,4 +1,5 @@
 {
+  "parent": "alchemica:preservation/root",
   "display": {
     "icon": {
       "item": "alchemica:vinegar"
@@ -7,9 +8,8 @@
       "text": "Distillation"
     },
     "description": {
-      "text": "Begin your journey into fermentation. Brew Vinegar in a cauldron."
+      "text": "Extract the acids. Brew Vinegar in a boiling cauldron using an Apple and a Glass Bottle."
     },
-    "background": "minecraft:textures/block/packed_mud.png",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true

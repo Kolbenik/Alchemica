@@ -1,0 +1,30 @@
+{
+  "parent": "alchemica:preservation/create_vat",
+  "display": {
+    "icon": {
+      "item": "minecraft:cooked_beef",
+      "nbt": "{alchemica_preserved:true}"
+    },
+    "title": {
+      "text": "Timeless"
+    },
+    "description": {
+      "text": "Obtain preserved food to stop the rot forever."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "has_preserved_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "nbt": "{alchemica_preserved:true}"
+          }
+        ]
+      }
+    }
+  }
+}

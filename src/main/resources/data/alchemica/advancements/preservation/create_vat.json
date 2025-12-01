@@ -1,0 +1,27 @@
+{
+  "parent": "alchemica:preservation/craft_vinegar",
+  "display": {
+    "icon": {
+      "item": "minecraft:cauldron"
+    },
+    "title": {
+      "text": "The Vat"
+    },
+    "description": {
+      "text": "Prepare the vessel. Right-click a Water Cauldron with Vinegar."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "use_vinegar": {
+      "trigger": "minecraft:item_used_on_block",
+      "conditions": {
+        "item": {
+          "items": [ "alchemica:vinegar" ]
+        }
+      }
+    }
+  }
+}
