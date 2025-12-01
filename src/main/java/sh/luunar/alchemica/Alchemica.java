@@ -8,8 +8,9 @@ package sh.luunar.alchemica;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.minecraft.advancement.Advancement; // <--- FIXED IMPORT
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeveledCauldronBlock;
@@ -20,6 +21,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -27,6 +29,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.GameMode;
@@ -34,12 +37,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sh.luunar.alchemica.block.ModBlocks;
 import sh.luunar.alchemica.event.AllowChatMessageHandler;
+import sh.luunar.alchemica.event.AntennaServerHandler;
 import sh.luunar.alchemica.item.ModItemGroup;
 import sh.luunar.alchemica.item.ModItems;
 import sh.luunar.alchemica.networking.ModMessages;
 import sh.luunar.alchemica.recipe.AlchemyRecipe;
 import sh.luunar.alchemica.recipe.ModRecipes;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +59,10 @@ public class Alchemica implements ModInitializer {
         ModBlocks.registerModBlocks();
         ModRecipes.registerRecipes();
         ModMessages.registerS2CMessages();
-        sh.luunar.alchemica.effect.ModEffects.registerEffects(); // Register Effects
+        sh.luunar.alchemica.effect.ModEffects.registerEffects();
+
+        // Register Antenna Handler
+        ServerTickEvents.END_SERVER_TICK.register(new AntennaServerHandler());
 
         // --- INTERACTION HUB ---
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
@@ -66,23 +72,38 @@ public class Alchemica implements ModInitializer {
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = world.getBlockState(pos);
 
-            // -----------------------------------------------------------
-            // INTERACTION 1: VINEGAR + WATER CAULDRON (Create Vinegar Cauldron)
-            // -----------------------------------------------------------
+            // 1. VINEGAR CAULDRON CREATION
             if (handStack.isOf(ModItems.VINEGAR) && state.isOf(Blocks.WATER_CAULDRON)) {
 
-                // 1. Transform to Vinegar Cauldron
                 world.setBlockState(pos, ModBlocks.VINEGAR_CAULDRON.getDefaultState());
 
-                // 2. Consume Vinegar / Give Bottle
                 if (!player.getAbilities().creativeMode) {
                     handStack.decrement(1);
-                    player.getInventory().offerOrDrop(new ItemStack(Items.GLASS_BOTTLE));
+                    if (handStack.isEmpty()) {
+                        player.setStackInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
+                    } else {
+                        player.getInventory().offerOrDrop(new ItemStack(Items.GLASS_BOTTLE));
+                    }
                 }
 
-                // 3. Effects
                 world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
                 ((ServerWorld) world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 15, 0.3, 0.3, 0.3, 0.1);
+
+                // --- FORCE GRANT ADVANCEMENT (FIXED FOR 1.20.1) ---
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    MinecraftServer server = serverPlayer.getServer();
+                    if (server != null) {
+                        Identifier advId = new Identifier(MOD_ID, "preservation/create_vat");
+
+                        // FIX: Use 'Advancement' instead of 'AdvancementEntry'
+                        Advancement entry = server.getAdvancementLoader().get(advId);
+
+                        if (entry != null) {
+                            serverPlayer.getAdvancementTracker().grantCriterion(entry, "use_vinegar");
+                        }
+                    }
+                }
+                // --------------------------------------------------
 
                 return ActionResult.SUCCESS;
             }
@@ -91,51 +112,41 @@ public class Alchemica implements ModInitializer {
             if (handStack.isOf(Items.STICK)) {
                 if (state.isOf(Blocks.WATER_CAULDRON) && state.get(LeveledCauldronBlock.LEVEL) >= 1) {
 
-                    // Heat Check (Must be boiling for Magic/Bio-Alchemy)
                     BlockPos below = pos.down();
                     BlockState belowState = world.getBlockState(below);
                     boolean isHeated = belowState.isOf(Blocks.CAMPFIRE) || belowState.isOf(Blocks.SOUL_CAMPFIRE) || belowState.isOf(Blocks.LAVA) || belowState.isOf(Blocks.MAGMA_BLOCK);
 
-                    // Gather Items
                     Box cauldronBox = new Box(pos).contract(0.1, 0.2, 0.1);
                     List<ItemEntity> entities = world.getEntitiesByClass(ItemEntity.class, cauldronBox, e -> true);
                     if (entities.isEmpty()) return ActionResult.PASS;
 
-                    // --- A. FORBIDDEN RITUALS (Bio-Alchemy) ---
-                    // These take priority over JSON recipes.
-                    // Only works if Heated.
+                    // A. FORBIDDEN RITUALS
                     if (isHeated) {
                         for (ItemEntity entity : entities) {
                             ItemStack stack = entity.getStack();
 
-                            // RITUAL: SOUL ASH (Ash + Blood)
+                            // Soul Ash
                             if (stack.isOf(ModItems.ALCHEMICAL_ASH)) {
-                                // Damage the player who clicked (4 Hearts)
                                 if (player.damage(world.getDamageSources().magic(), 8.0f)) {
                                     stack.decrement(1);
                                     if (stack.isEmpty()) entity.discard();
 
-                                    // Result
                                     world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, new ItemStack(ModItems.SOUL_ASH)));
-
                                     world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
                                     player.sendMessage(Text.literal("The ash drinks your life...").formatted(Formatting.DARK_AQUA), true);
 
-                                    // Consume Water
                                     decrementWater(world, pos, state);
                                     return ActionResult.SUCCESS;
                                 }
                             }
 
-                            // RITUAL: BANISHMENT (Emerald + Life)
+                            // Banishment
                             if (stack.isOf(Items.EMERALD)) {
                                 stack.decrement(1);
                                 if (stack.isEmpty()) entity.discard();
 
-                                // Result: Totem
                                 world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, new ItemStack(Items.TOTEM_OF_UNDYING)));
 
-                                // Consequence: Banishment
                                 if (player instanceof ServerPlayerEntity serverPlayer) {
                                     serverPlayer.changeGameMode(GameMode.SPECTATOR);
                                     serverPlayer.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 999999, 0, false, false));
@@ -149,7 +160,7 @@ public class Alchemica implements ModInitializer {
                         }
                     }
 
-                    // --- B. STANDARD JSON ALCHEMY ---
+                    // B. STANDARD RECIPES
                     SimpleInventory inventory = new SimpleInventory(entities.size());
                     for (int i = 0; i < entities.size(); i++) inventory.setStack(i, entities.get(i).getStack());
 
@@ -158,7 +169,6 @@ public class Alchemica implements ModInitializer {
                     if (match.isPresent()) {
                         AlchemyRecipe recipe = match.get();
 
-                        // Consume Items
                         List<ItemEntity> toDiscard = new ArrayList<>();
                         for (int i = 0; i < recipe.getIngredients().size(); i++) {
                             for(ItemEntity entity : entities) {
@@ -171,17 +181,14 @@ public class Alchemica implements ModInitializer {
                         }
                         for(ItemEntity e : toDiscard) e.discard();
 
-                        // 50/50 Gamble
                         boolean success = world.random.nextFloat() < 0.5f;
 
                         if (success) {
-                            // Success
                             ItemStack result = recipe.getOutput(world.getRegistryManager()).copy();
                             world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1.0, pos.getZ()+0.5, result));
                             world.playSound(null, pos, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 1f, 1f);
                             ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 10, 0.2, 0.2, 0.2, 0.1);
                         } else {
-                            // Failure
                             ItemStack result = new ItemStack(ModItems.ALCHEMICAL_ASH);
                             world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1.0, pos.getZ()+0.5, result));
                             world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1f, 1f);
@@ -196,15 +203,14 @@ public class Alchemica implements ModInitializer {
             return ActionResult.PASS;
         });
 
-        // ... Chat Logic ...
+        // Chat
         AllowChatMessageHandler handler = new AllowChatMessageHandler();
-        ClientSendMessageEvents.ALLOW_CHAT.register(handler); // Using Client Event now
+        ClientSendMessageEvents.ALLOW_CHAT.register(handler);
         ClientSendMessageEvents.ALLOW_COMMAND.register(handler);
 
         LOGGER.info("Alchemica initialized! Rituals Armed.");
     }
 
-    // Helper to lower water level
     private void decrementWater(net.minecraft.world.World world, BlockPos pos, BlockState state) {
         int currentLevel = state.get(LeveledCauldronBlock.LEVEL);
         if (currentLevel > 1) {
