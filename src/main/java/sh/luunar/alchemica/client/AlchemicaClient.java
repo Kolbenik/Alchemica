@@ -20,9 +20,6 @@ public class AlchemicaClient implements ClientModInitializer {
         // 1. Drunk Shader
         ClientTickEvents.END_CLIENT_TICK.register(new DrunkShaderHandler());
 
-        // 2. Antenna Broadcast (NEW)
-        ClientTickEvents.END_CLIENT_TICK.register(new AntennaSignalHandler());
-
         EntityRendererRegistry.register(ModEntities.SPLASH_MILK_ENTITY, FlyingItemEntityRenderer::new);
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {

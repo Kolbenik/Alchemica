@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.gen.structure.Structure;
 import sh.luunar.alchemica.Alchemica;
 import sh.luunar.alchemica.item.ModItems;
@@ -29,8 +30,19 @@ import java.util.Random;
 
 public class AntennaServerHandler implements ServerTickEvents.EndTick {
 
-    private final Random random = new Random();
+    //private final Random random = new Random();
     private int ticker = 0;
+
+    private static final String[] MESSAGES = {
+            "THEY ARE WATCHING",
+            "DO NOT SLEEP",
+            "THE ASH IS ALIVE",
+            "SIGNAL LOST...",
+            "IT HURTS",
+            "NULL POINTER IN REALITY",
+            "THE SKY IS LEAKING",
+            "01001000 01000101 01001100 01010000" // "HELP" in binary
+    };
 
     @Override
     public void onEndTick(MinecraftServer server) {
@@ -52,7 +64,7 @@ public class AntennaServerHandler implements ServerTickEvents.EndTick {
         if (!hasAntenna || !player.getWorld().isThundering()) return;
 
         // 2. Roll Chance (20% chance every 5 seconds)
-        if (random.nextFloat() > 0.2f) return;
+        if (player.getRandom().nextFloat() > 0.2f) return;
 
         // 3. LOCATE REAL STRUCTURE
         ServerWorld world = player.getServerWorld();
@@ -78,15 +90,17 @@ public class AntennaServerHandler implements ServerTickEvents.EndTick {
     }
 
     private void sendSignal(ServerPlayerEntity player, BlockPos target) {
-        String[] messages = {
-                "ANOMALY DETECTED", "SIGNAL LOCK", "THEY ARE HERE", "CACHE FOUND"
-        };
-        String msg = messages[random.nextInt(messages.length)];
+        Vec3i offset = new Vec3i(
+                player.getRandom().nextBetween(5, 30),
+                0,
+                player.getRandom().nextBetween(5, 30)
+        );
+        target = target.add(offset);
+
+        String msg = MESSAGES[player.getRandom().nextInt(MESSAGES.length)];
         int dist = (int) Math.sqrt(player.getBlockPos().getSquaredDistance(target));
 
-        Text chatMessage = Text.literal("⏚ ")
-                .formatted(Formatting.DARK_AQUA)
-                .append(Text.literal("[" + target.getX() + ", " + target.getZ() + "]").formatted(Formatting.YELLOW))
+        Text chatMessage = Text.literal("[" + target.getX() + ", " + target.getZ() + "]").formatted(Formatting.YELLOW)
                 .append(Text.literal(" (" + dist + "m) :: ").formatted(Formatting.DARK_GRAY))
                 .append(Text.literal(msg).formatted(Formatting.GRAY, Formatting.ITALIC));
 
