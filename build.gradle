@@ -128,12 +128,17 @@ java {
     withSourcesJar()
 }
 
+//jar {
+//    from("LICENSE") {
+//        rename { "${it}_${project.archivesBaseName}"}
+//    }
+//}
+
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
+        rename { "${it}_${project.base.archivesName.get()}"}
     }
 }
-
 
 
 // configure the maven publication
