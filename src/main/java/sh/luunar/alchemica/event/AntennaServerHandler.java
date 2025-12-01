@@ -81,7 +81,7 @@ public class AntennaServerHandler implements ServerTickEvents.EndTick {
             // Locate it! (Radius 100 chunks)
             // FIXED: Used RegistryEntryList.of() instead of HolderSet.createDirect()
             BlockPos targetPos = Objects.requireNonNull(world.getChunkManager().getChunkGenerator()
-                    .locateStructure(world, RegistryEntryList.of(structureEntry.get()), playerPos, 100, false)).getFirst();
+                    .locateStructure(world, RegistryEntryList.of(structureEntry.get()), playerPos, 50, false)).getFirst();
 
             if (targetPos != null) {
                 sendSignal(player, targetPos);
