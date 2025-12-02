@@ -7,10 +7,9 @@
 package sh.luunar.alchemica;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.advancement.Advancement; // <--- FIXED IMPORT
+import net.minecraft.advancement.Advancement;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeveledCauldronBlock;
@@ -36,11 +35,10 @@ import net.minecraft.world.GameMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sh.luunar.alchemica.block.ModBlocks;
-import sh.luunar.alchemica.event.AllowChatMessageHandler;
+import sh.luunar.alchemica.entity.ModEntities; // Make sure Entities are registered!
 import sh.luunar.alchemica.event.AntennaServerHandler;
 import sh.luunar.alchemica.item.ModItemGroup;
 import sh.luunar.alchemica.item.ModItems;
-import sh.luunar.alchemica.networking.ModMessages;
 import sh.luunar.alchemica.recipe.AlchemyRecipe;
 import sh.luunar.alchemica.recipe.ModRecipes;
 
@@ -57,11 +55,11 @@ public class Alchemica implements ModInitializer {
         ModItemGroup.registerModItemGroups();
         ModItems.registerModItems();
         ModBlocks.registerModBlocks();
+        ModEntities.registerModEntities(); // Don't forget entities!
         ModRecipes.registerRecipes();
-        ModMessages.registerS2CMessages();
         sh.luunar.alchemica.effect.ModEffects.registerEffects();
 
-        // Register Antenna Handler
+        // --- SERVER EVENTS (Safe) ---
         ServerTickEvents.END_SERVER_TICK.register(new AntennaServerHandler());
 
         // --- INTERACTION HUB ---
@@ -89,22 +87,17 @@ public class Alchemica implements ModInitializer {
                 world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
                 ((ServerWorld) world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, 15, 0.3, 0.3, 0.3, 0.1);
 
-                // --- FORCE GRANT ADVANCEMENT (FIXED FOR 1.20.1) ---
+                // GRANT ADVANCEMENT
                 if (player instanceof ServerPlayerEntity serverPlayer) {
                     MinecraftServer server = serverPlayer.getServer();
                     if (server != null) {
                         Identifier advId = new Identifier(MOD_ID, "preservation/create_vat");
-
-                        // FIX: Use 'Advancement' instead of 'AdvancementEntry'
                         Advancement entry = server.getAdvancementLoader().get(advId);
-
                         if (entry != null) {
                             serverPlayer.getAdvancementTracker().grantCriterion(entry, "use_vinegar");
                         }
                     }
                 }
-                // --------------------------------------------------
-
                 return ActionResult.SUCCESS;
             }
 
@@ -134,7 +127,6 @@ public class Alchemica implements ModInitializer {
                                     world.spawnEntity(new ItemEntity(world, pos.getX()+0.5, pos.getY()+1, pos.getZ()+0.5, new ItemStack(ModItems.SOUL_ASH)));
                                     world.playSound(null, pos, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 1f, 1f);
                                     player.sendMessage(Text.literal("The ash drinks your life...").formatted(Formatting.DARK_AQUA), true);
-
                                     decrementWater(world, pos, state);
                                     return ActionResult.SUCCESS;
                                 }
@@ -168,7 +160,6 @@ public class Alchemica implements ModInitializer {
 
                     if (match.isPresent()) {
                         AlchemyRecipe recipe = match.get();
-
                         List<ItemEntity> toDiscard = new ArrayList<>();
                         for (int i = 0; i < recipe.getIngredients().size(); i++) {
                             for(ItemEntity entity : entities) {
@@ -203,12 +194,7 @@ public class Alchemica implements ModInitializer {
             return ActionResult.PASS;
         });
 
-        // Chat
-        AllowChatMessageHandler handler = new AllowChatMessageHandler();
-        ClientSendMessageEvents.ALLOW_CHAT.register(handler);
-        ClientSendMessageEvents.ALLOW_COMMAND.register(handler);
-
-        LOGGER.info("Alchemica initialized! Rituals Armed.");
+        LOGGER.info("Alchemica initialized! Server Safe.");
     }
 
     private void decrementWater(net.minecraft.world.World world, BlockPos pos, BlockState state) {
